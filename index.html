@@ -284,6 +284,42 @@ body { padding-top: var(--cg-strip-h); }
 .cg-colophon-note { margin: 4px 0 0; color: #9a9aa8; }
 @media (max-width: 640px) { .cg-strip-label { display: none; } }
 @media (prefers-reduced-motion: reduce) { .cg-skip { transition: none; } }
+
+/* ---- Mobile reading view (touch / small screens) ------------------------------------- */
+/* The immersive per-구 template is desktop-only. On touch devices and narrow screens the
+   .cg-read view is shown instead — it uses only safe, high-contrast CSS so text can never
+   go invisible on iOS Safari (no background-clip:text, backdrop-filter, 100vh, :hover-gated
+   reveals, or mix-blend-mode). Fully namespaced + generator-controlled. */
+.cg-read { display: none; }
+@media (hover: none) and (pointer: coarse), (max-width: 768px) {
+  /* Neutralise immersive templates that lock scrolling / lock the viewport on <body>. */
+  html, body { overflow-x: hidden !important; overflow-y: auto !important; height: auto !important;
+    min-height: 0 !important; position: static !important; touch-action: auto !important; background: #ffffff !important; }
+  .cg-immersive { display: none !important; }
+  .cg-read { display: block; }
+}
+.cg-read { max-width: 720px; margin: 0 auto; padding: 20px 18px 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  color: #17171f; background: #ffffff; line-height: 1.75; -webkit-text-size-adjust: 100%; }
+.cg-read * { max-width: 100%; box-sizing: border-box; }
+.cg-read-head { padding: 8px 0 16px; border-bottom: 3px solid var(--cg-ra, #2d5bff); margin-bottom: 20px; }
+.cg-read-eyebrow { margin: 0 0 4px; color: var(--cg-rd, #333); font-weight: 700; font-size: 15px; letter-spacing: .02em; }
+.cg-read-head h1 { margin: 0; font-size: clamp(30px, 8vw, 40px); line-height: 1.15; color: #14141c; font-weight: 800; }
+.cg-read h2 { font-size: 20px; margin: 30px 0 10px; padding-left: 11px; color: #14141c; font-weight: 700;
+  border-left: 5px solid var(--cg-ra, #2d5bff); }
+.cg-read p { margin: 0 0 12px; font-size: 17px; color: #23232d; }
+.cg-read section { margin: 0; }
+.cg-read ul { margin: 8px 0 0; padding-left: 20px; }
+.cg-read li { margin: 8px 0; font-size: 16px; color: #23232d; }
+.cg-read li strong { color: #111119; font-weight: 700; }
+.cg-read .facts, .cg-read .symbols { list-style: none; padding: 14px 16px; margin: 8px 0 0;
+  background: #f5f6fa; border: 1px solid #e6e8f0; border-radius: 12px; }
+.cg-read .faq details { border: 1px solid #e6e8f0; border-radius: 10px; padding: 10px 14px; margin: 8px 0; background: #fbfbfd; }
+.cg-read .faq summary { cursor: pointer; font-weight: 700; font-size: 16px; color: #14141c; }
+.cg-read .faq details p { margin: 8px 0 2px; color: #44454f; }
+.cg-read a { color: #1a46d8; word-break: break-word; }
+.cg-read .sources { font-size: 14px; color: #55565f; }
+.cg-read .sources a { color: #3a5bd0; }
 </style>
 </head>
 <body>
@@ -292,6 +328,7 @@ body { padding-top: var(--cg-strip-h); }
     <span class="cg-ad">AD</span><span class="cg-strip-label">후원 파트너</span><span class="cg-strip-list"><a class="cg-strip-item" href="https://ikoffices.com" rel="sponsored noopener" target="_blank">일광오피스</a><span class="cg-strip-dot" aria-hidden="true">·</span><a class="cg-strip-item" href="https://mobidicsaju.com" rel="sponsored noopener" target="_blank">모비딕 사주</a><span class="cg-strip-dot" aria-hidden="true">·</span><a class="cg-strip-item" href="https://www.foodskorea.com/" rel="sponsored noopener" target="_blank">전국팔도 식품도감</a><span class="cg-strip-dot" aria-hidden="true">·</span><a class="cg-strip-item" href="https://myflowmakers.com" rel="sponsored noopener" target="_blank">마이플로우메이커스</a><span class="cg-strip-dot" aria-hidden="true">·</span><a class="cg-strip-item" href="https://yeonlijispace.com" rel="sponsored noopener" target="_blank">연리지 인테리어</a><span class="cg-strip-dot" aria-hidden="true">·</span><a class="cg-strip-item" href="https://yeonliji.io" rel="sponsored noopener" target="_blank">주식회사 연리지</a><span class="cg-strip-dot" aria-hidden="true">·</span><span class="cg-strip-item cg-strip-text">세무·법률 자문</span></span>
   </aside>
   <div id="cg-main" tabindex="-1"></div>
+  <div class="cg-immersive">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Fredoka:wght@400;500;600&display=swap');
 
@@ -529,124 +566,7 @@ body { padding-top: var(--cg-strip-h); }
 }
 
 /* Progressive enhancement fallback: if the section-styling script never runs,
-   the raw       <section id="intro">
-        <h2>지역 소개</h2>
-        <p>부산광역시 중구는 부산항을 마주 보는 원도심으로, 개항 이래 부산의 상업과 관광이 응집된 심장부 역할을 이어 온 곳입니다. 자갈치시장과 국제시장, BIFF광장, 광복로가 좁은 골목 안에 밀집해 관광객과 상인의 발길이 하루 종일 이어집니다. 면적은 약 2.82㎢로 부산의 기초자치단체 가운데 가장 작지만, 그 안에 담긴 근현대사와 시장 문화의 밀도는 어느 지역보다 짙습니다. 용두산공원 정상의 부산타워에서 내려다보면 남포동 극장가와 항만, 영도대교가 한눈에 펼쳐집니다. 6·25 전쟁기 피난 수도의 애환이 40계단과 보수동 책방골목에 고스란히 남아, 옛것과 오늘이 공존하는 독특한 정취를 만들어 냅니다.</p>
-      </section>
-      <section id="facts">
-        <h2>주요 통계</h2>
-        <ul class="facts">
-          <li>인구: 약 37,736명 (2024)</li>
-          <li>면적: 2.82 km²</li>
-          <li>신설: 1957-01-01</li>
-        </ul>
-      </section>
-      <section id="history">
-        <h2>역사</h2>
-        <p>중구 일대는 조선 후기 초량왜관이 자리했던 곳으로, 1675년 착공해 1678년 완공된 약 10만 평 규모의 왜관에서 조선과 일본의 교역이 이루어졌습니다. 일본 사신을 맞아 연회를 베풀던 연향대청이 있던 자리에서 대청동과 대청로라는 지명이 유래했습니다. 1876년 부산 개항 이후 이 일대는 근대 문물이 밀려드는 관문이 되었고, 1914년 부산부 설치로 행정 중심에 편입되었습니다. 광복 직후에는 일본인이 두고 간 책을 노점에 펼쳐 팔던 것이 보수동 책방골목의 시작이 되었고, 6·25 전쟁기에는 임시수도 부산의 피난민이 40계단 주변에 판잣집을 짓고 구호물자를 사고팔았습니다. 1957년 경상남도 부산시 중구로 정식 출범했고, 1995년 부산광역시 중구로 개칭되었으며 1999년 보수1·2동 통합으로 현재의 9개 행정동 체제가 갖춰졌습니다.</p>
-      </section>
-      <section id="geography">
-        <h2>지리·자연환경</h2>
-        <p>중구는 부산항 북항에 접한 좁은 해안 저지대와 그 배후의 가파른 산자락으로 이루어져 있습니다. 동쪽은 영주천, 서쪽은 보수천을 자연 경계로 삼고 남쪽은 바다에 면하며, 뒤로는 구봉산 줄기를 이어받은 보수산과 용두산이 시가지를 감싸 안습니다. 용두산은 그 모양이 바다를 향해 머리를 든 용을 닮았다 하여 붙은 이름으로, 오늘날 도심 속 녹지 전망대 역할을 합니다. 평지가 거의 없어 산비탈을 따라 계단식으로 집과 골목이 빼곡히 들어찬 산복도로 경관이 특징적입니다. 온대성 기후로 연평균 기온은 약 14.4도, 연간 강수량은 약 1,491㎜이며 바다에 면해 겨울에도 비교적 온화합니다. 이렇듯 산과 바다가 맞닿은 좁은 지형이 중구 특유의 조밀한 도시 풍경을 만들어 냈습니다.</p>
-      </section>
-      <section id="characteristics">
-        <h2>지역 특징</h2>
-        <p>중구는 2024년 기준 인구가 약 3만 7천여 명으로 부산에서 손꼽히게 인구가 적지만, 낮 시간에는 상인과 방문객으로 인구가 크게 불어나는 전형적인 상업·관광 도심입니다. 자갈치시장을 중심으로 한 수산물 유통, 국제시장과 부평깡통시장의 전통 도소매, 남포동·광복동의 패션과 요식업이 지역 경제를 떠받칩니다. 한국은행 부산본부와 금융결제원 부산본부 등 금융기관과 여객터미널이 자리해 항만·물류·금융 기능이 결합된 원도심 성격을 지닙니다. 정주 인구는 고령화와 도심 공동화로 줄었으나, 관광특구 지정과 원도심 재생 사업으로 유동 인구는 활발합니다. 좁은 면적에 41개 법정동을 9개 행정동으로 묶어 운영하며 통·반 밀도가 높습니다. 이처럼 상주 인구는 적어도 부산 관광과 상업의 상징성을 강하게 지닌 것이 중구의 가장 큰 특징입니다.</p>
-      </section>
-      <section id="landmarks">
-        <h2>대표 명소</h2>
-        <ul>
-          <li><strong>자갈치시장</strong> — 부산을 대표하는 국내 최대 수산물 시장으로, 자갈이 깔린 바닷가에서 유래한 이름처럼 항구를 끼고 활어와 건어물이 거래되며 부산 여행의 필수 코스로 꼽힙니다.</li>
-          <li><strong>국제시장</strong> — 광복과 6·25 전쟁을 거치며 형성된 부산의 대표 전통시장으로, 먹자골목과 만물상이 미로처럼 이어져 서민 상업 문화의 원형을 간직하고 있습니다.</li>
-          <li><strong>용두산공원과 부산타워</strong> — 용을 닮은 산에 조성된 도심 공원으로 정상에 높이 120m급 부산타워와 이순신 장군 동상이 있어, 남포동 극장가와 부산항 야경을 한눈에 조망할 수 있습니다.</li>
-          <li><strong>BIFF광장</strong> — 1996년 부산국제영화제 개최를 계기로 옛 극장가 일대를 새롭게 단장해 명명한 거리로, 바닥에 새겨진 영화인 핸드프린팅과 씨앗호떡 노점이 명물입니다.</li>
-          <li><strong>보수동 책방골목</strong> — 광복 직후 헌책을 노점에 펼쳐 팔던 데서 시작된 국내 대표 헌책방 거리로, 오래된 서점들이 좁은 골목에 줄지어 고서와 헌책 문화를 이어 가고 있습니다.</li>
-        </ul>
-      </section>
-      <section id="heritage">
-        <h2>문화유산·문화시설</h2>
-        <ul>
-          <li><strong>부산근현대역사관</strong> — 옛 한국은행 부산본부 등 근대 건축물을 활용해 개항부터 현재까지 부산의 근현대사를 전시하는 시립 역사관으로, 원도심 답사의 출발점 역할을 합니다.</li>
-          <li><strong>대한성공회 부산주교좌성당</strong> — 대청동에 1924년 지어진 일제강점기 성공회 성당으로, 2013년 국가등록문화재 제573호로 지정된 근대 종교 건축의 대표 사례입니다.</li>
-          <li><strong>40계단 문화관광테마거리</strong> — 6·25 전쟁기 피난민의 애환이 서린 40계단 일대를 1950~60년대 분위기로 재현한 테마거리로, 피난 생활상을 담은 조형물과 문화관이 조성되어 있습니다.</li>
-          <li><strong>광복로 겨울빛 트리축제</strong> — 매년 12월부터 이듬해까지 광복로 일대를 거대한 트리와 조명으로 밝히는 부산 대표 겨울 빛축제로, 원도심 상권 활성화와 함께 연말 명소로 자리 잡았습니다.</li>
-          <li><strong>부산자갈치축제</strong> — 자갈치시장을 무대로 열리는 수산물 축제로, 활어 경매와 먹거리 장터, 공연이 어우러져 부산 어시장의 활기와 정을 알리는 지역 대표 행사입니다.</li>
-        </ul>
-      </section>
-      <section id="nature">
-        <h2>자연·휴식</h2>
-        <ul>
-          <li><strong>용두산공원</strong> — 도심 한복판 용두산 정상에 조성된 녹지 공원으로, 계단과 에스컬레이터로 오르며 부산타워와 팔각정, 꽃시계가 어우러진 대표 산책·전망 명소입니다.</li>
-          <li><strong>수미르공원</strong> — 부산항 연안여객터미널 인근 바닷가에 조성된 친수공원으로, 물과 용을 뜻하는 이름처럼 항만과 영도를 바라보며 산책하기 좋은 해안 휴식 공간입니다.</li>
-          <li><strong>보수산 산복도로 일대</strong> — 중구를 감싸는 보수산 자락의 산복도로는 가파른 계단길과 마을을 잇는 골목 산책로로, 원도심의 지붕과 항구를 조망하며 걷는 코스로 사랑받습니다.</li>
-          <li><strong>민주공원</strong> — 중구와 인접한 대청공원 언덕에 자리해 도보로 이어지는 추모·휴식 공간으로, 4·19와 부마항쟁 등 민주화 역사를 기리며 도심 전망과 숲길을 함께 제공합니다.</li>
-          <li><strong>광복로 문화패션거리</strong> — 남포동과 광복동을 잇는 보행 친화형 거리로, 가로수와 벤치가 놓인 산책 겸 쇼핑 공간으로 조성되어 겨울 트리축제의 무대가 되기도 합니다.</li>
-        </ul>
-      </section>
-      <section id="transport">
-        <h2>교통</h2>
-        <p>중구는 부산 도시철도 1호선이 남북으로 관통해 중앙역, 남포역, 자갈치역이 원도심 곳곳을 촘촘히 연결합니다. 남포역과 자갈치역은 각각 광복로·BIFF광장과 자갈치시장으로 바로 이어져 관광객 접근성이 매우 좋습니다. 도로는 중앙대로가 아시안하이웨이 6호선으로 도심을 세로로 관통하고, 충장대로가 항만을 따라 이어지며 구덕로(국도 제2호선)가 서쪽으로 뻗습니다. 바닷길로는 부산항국제여객터미널에서 일본 노선이, 연안여객터미널에서 국내 도서 노선이 운항됩니다. 다만 좁은 골목과 가파른 지형 탓에 원도심 안쪽은 도보와 대중교통 이용이 편리하며, 주요 명소가 서로 걸어서 오갈 수 있는 거리에 모여 있습니다.</p>
-      </section>
-      <section id="symbols">
-        <h2>지역 상징</h2>
-        <ul class="symbols">
-          <li>구화(꽃): 동백</li>
-          <li>구목(나무): 소나무</li>
-          <li>구조(새): 비둘기</li>
-        </ul>
-      </section>
-      <section id="faq">
-        <h2>자주 묻는 질문</h2>
-        <div class="faq">
-          <details>
-            <summary>부산 중구청은 어디에 있나요?</summary>
-            <p>부산광역시 중구 중구로 120(대청동)에 위치하며, 도시철도 1호선 중앙역과 가깝습니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구의 대표 관광지는 어디인가요?</summary>
-            <p>자갈치시장, 국제시장, 용두산공원과 부산타워, BIFF광장, 보수동 책방골목이 대표적이며 대부분 걸어서 이동할 수 있습니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구는 왜 관광특구로 유명한가요?</summary>
-            <p>용두산공원 일대의 근대역사관, 헌책방 골목, 자갈치·국제시장, BIFF광장, 40계단 등이 밀집해 2008년 관광특구로 지정되었기 때문입니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구를 지하철로 가려면 어느 역에서 내리나요?</summary>
-            <p>도시철도 1호선 남포역과 자갈치역, 중앙역이 원도심 명소와 바로 연결되어 편리합니다.</p>
-          </details>
-          <details>
-            <summary>보수동 책방골목은 어떻게 생겨났나요?</summary>
-            <p>광복 직후 일본인이 남기고 간 책을 노점에 펼쳐 팔던 데서 시작되어, 지금은 국내 대표 헌책방 거리로 자리 잡았습니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구의 인구는 얼마나 되나요?</summary>
-            <p>2024년 기준 약 3만 7천여 명으로 부산에서 인구가 적은 편이지만, 낮에는 상인과 관광객으로 크게 붐빕니다.</p>
-          </details>
-        </div>
-      </section>
-      <section id="links">
-        <h2>공식 링크</h2>
-        <ul>
-          <li><a href="https://www.bsjunggu.go.kr/index.junggu" rel="noopener">부산광역시 중구청</a></li>
-          <li><a href="https://www.bsjunggu.go.kr/tour/index.junggu" rel="noopener">부산광역시 중구 문화관광</a></li>
-        </ul>
-      </section>
-      <section id="github">
-        <h2>GitHub</h2>
-        <ul>
-          <li><a href="https://github.com/kr-busan-jung" rel="noopener">GitHub 조직: kr-busan-jung</a></li>
-          <li><a href="https://github.com/kr-busan-jung/kr-busan-jung.github.io" rel="noopener">이 사이트 저장소</a></li>
-        </ul>
-      </section>
-      <section id="sources">
-        <h2>출처</h2>
-        <ul class="sources">
-          <li><a href="https://ko.wikipedia.org/wiki/%EC%A4%91%EA%B5%AC_(%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C)" rel="noopener">중구 (부산광역시) - 위키백과</a> (조회 2026-07-08)</li>
-          <li><a href="https://www.bsjunggu.go.kr/index.junggu" rel="noopener">부산광역시 중구청 공식 홈페이지</a> (조회 2026-07-08)</li>
-          <li><a href="https://www.bsjunggu.go.kr/tour/index.junggu" rel="noopener">부산광역시 중구 문화관광 - 40계단·보수동 책방골목·BIFF광장 소개</a> (조회 2026-07-08)</li>
-          <li><a href="https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaCpno=4412105730000" rel="noopener">국가유산포털 - 대한성공회 부산주교좌성당(국가등록문화재 제573호)</a> (조회 2026-07-08)</li>
-        </ul>
-      </section> sections still read fine inside a plain readable card. */
+   the raw 콘텐츠 sections still read fine inside a plain readable card. */
 #jung-content-raw{
   border:2px dashed var(--jung-line);
   border-radius:12px;
@@ -845,124 +765,7 @@ body { padding-top: var(--cg-strip-h); }
   document.documentElement.classList.add('js-on');
   root.classList.add('js-on');
 
-  // ---- 1. Lift the injected       <section id="intro">
-        <h2>지역 소개</h2>
-        <p>부산광역시 중구는 부산항을 마주 보는 원도심으로, 개항 이래 부산의 상업과 관광이 응집된 심장부 역할을 이어 온 곳입니다. 자갈치시장과 국제시장, BIFF광장, 광복로가 좁은 골목 안에 밀집해 관광객과 상인의 발길이 하루 종일 이어집니다. 면적은 약 2.82㎢로 부산의 기초자치단체 가운데 가장 작지만, 그 안에 담긴 근현대사와 시장 문화의 밀도는 어느 지역보다 짙습니다. 용두산공원 정상의 부산타워에서 내려다보면 남포동 극장가와 항만, 영도대교가 한눈에 펼쳐집니다. 6·25 전쟁기 피난 수도의 애환이 40계단과 보수동 책방골목에 고스란히 남아, 옛것과 오늘이 공존하는 독특한 정취를 만들어 냅니다.</p>
-      </section>
-      <section id="facts">
-        <h2>주요 통계</h2>
-        <ul class="facts">
-          <li>인구: 약 37,736명 (2024)</li>
-          <li>면적: 2.82 km²</li>
-          <li>신설: 1957-01-01</li>
-        </ul>
-      </section>
-      <section id="history">
-        <h2>역사</h2>
-        <p>중구 일대는 조선 후기 초량왜관이 자리했던 곳으로, 1675년 착공해 1678년 완공된 약 10만 평 규모의 왜관에서 조선과 일본의 교역이 이루어졌습니다. 일본 사신을 맞아 연회를 베풀던 연향대청이 있던 자리에서 대청동과 대청로라는 지명이 유래했습니다. 1876년 부산 개항 이후 이 일대는 근대 문물이 밀려드는 관문이 되었고, 1914년 부산부 설치로 행정 중심에 편입되었습니다. 광복 직후에는 일본인이 두고 간 책을 노점에 펼쳐 팔던 것이 보수동 책방골목의 시작이 되었고, 6·25 전쟁기에는 임시수도 부산의 피난민이 40계단 주변에 판잣집을 짓고 구호물자를 사고팔았습니다. 1957년 경상남도 부산시 중구로 정식 출범했고, 1995년 부산광역시 중구로 개칭되었으며 1999년 보수1·2동 통합으로 현재의 9개 행정동 체제가 갖춰졌습니다.</p>
-      </section>
-      <section id="geography">
-        <h2>지리·자연환경</h2>
-        <p>중구는 부산항 북항에 접한 좁은 해안 저지대와 그 배후의 가파른 산자락으로 이루어져 있습니다. 동쪽은 영주천, 서쪽은 보수천을 자연 경계로 삼고 남쪽은 바다에 면하며, 뒤로는 구봉산 줄기를 이어받은 보수산과 용두산이 시가지를 감싸 안습니다. 용두산은 그 모양이 바다를 향해 머리를 든 용을 닮았다 하여 붙은 이름으로, 오늘날 도심 속 녹지 전망대 역할을 합니다. 평지가 거의 없어 산비탈을 따라 계단식으로 집과 골목이 빼곡히 들어찬 산복도로 경관이 특징적입니다. 온대성 기후로 연평균 기온은 약 14.4도, 연간 강수량은 약 1,491㎜이며 바다에 면해 겨울에도 비교적 온화합니다. 이렇듯 산과 바다가 맞닿은 좁은 지형이 중구 특유의 조밀한 도시 풍경을 만들어 냈습니다.</p>
-      </section>
-      <section id="characteristics">
-        <h2>지역 특징</h2>
-        <p>중구는 2024년 기준 인구가 약 3만 7천여 명으로 부산에서 손꼽히게 인구가 적지만, 낮 시간에는 상인과 방문객으로 인구가 크게 불어나는 전형적인 상업·관광 도심입니다. 자갈치시장을 중심으로 한 수산물 유통, 국제시장과 부평깡통시장의 전통 도소매, 남포동·광복동의 패션과 요식업이 지역 경제를 떠받칩니다. 한국은행 부산본부와 금융결제원 부산본부 등 금융기관과 여객터미널이 자리해 항만·물류·금융 기능이 결합된 원도심 성격을 지닙니다. 정주 인구는 고령화와 도심 공동화로 줄었으나, 관광특구 지정과 원도심 재생 사업으로 유동 인구는 활발합니다. 좁은 면적에 41개 법정동을 9개 행정동으로 묶어 운영하며 통·반 밀도가 높습니다. 이처럼 상주 인구는 적어도 부산 관광과 상업의 상징성을 강하게 지닌 것이 중구의 가장 큰 특징입니다.</p>
-      </section>
-      <section id="landmarks">
-        <h2>대표 명소</h2>
-        <ul>
-          <li><strong>자갈치시장</strong> — 부산을 대표하는 국내 최대 수산물 시장으로, 자갈이 깔린 바닷가에서 유래한 이름처럼 항구를 끼고 활어와 건어물이 거래되며 부산 여행의 필수 코스로 꼽힙니다.</li>
-          <li><strong>국제시장</strong> — 광복과 6·25 전쟁을 거치며 형성된 부산의 대표 전통시장으로, 먹자골목과 만물상이 미로처럼 이어져 서민 상업 문화의 원형을 간직하고 있습니다.</li>
-          <li><strong>용두산공원과 부산타워</strong> — 용을 닮은 산에 조성된 도심 공원으로 정상에 높이 120m급 부산타워와 이순신 장군 동상이 있어, 남포동 극장가와 부산항 야경을 한눈에 조망할 수 있습니다.</li>
-          <li><strong>BIFF광장</strong> — 1996년 부산국제영화제 개최를 계기로 옛 극장가 일대를 새롭게 단장해 명명한 거리로, 바닥에 새겨진 영화인 핸드프린팅과 씨앗호떡 노점이 명물입니다.</li>
-          <li><strong>보수동 책방골목</strong> — 광복 직후 헌책을 노점에 펼쳐 팔던 데서 시작된 국내 대표 헌책방 거리로, 오래된 서점들이 좁은 골목에 줄지어 고서와 헌책 문화를 이어 가고 있습니다.</li>
-        </ul>
-      </section>
-      <section id="heritage">
-        <h2>문화유산·문화시설</h2>
-        <ul>
-          <li><strong>부산근현대역사관</strong> — 옛 한국은행 부산본부 등 근대 건축물을 활용해 개항부터 현재까지 부산의 근현대사를 전시하는 시립 역사관으로, 원도심 답사의 출발점 역할을 합니다.</li>
-          <li><strong>대한성공회 부산주교좌성당</strong> — 대청동에 1924년 지어진 일제강점기 성공회 성당으로, 2013년 국가등록문화재 제573호로 지정된 근대 종교 건축의 대표 사례입니다.</li>
-          <li><strong>40계단 문화관광테마거리</strong> — 6·25 전쟁기 피난민의 애환이 서린 40계단 일대를 1950~60년대 분위기로 재현한 테마거리로, 피난 생활상을 담은 조형물과 문화관이 조성되어 있습니다.</li>
-          <li><strong>광복로 겨울빛 트리축제</strong> — 매년 12월부터 이듬해까지 광복로 일대를 거대한 트리와 조명으로 밝히는 부산 대표 겨울 빛축제로, 원도심 상권 활성화와 함께 연말 명소로 자리 잡았습니다.</li>
-          <li><strong>부산자갈치축제</strong> — 자갈치시장을 무대로 열리는 수산물 축제로, 활어 경매와 먹거리 장터, 공연이 어우러져 부산 어시장의 활기와 정을 알리는 지역 대표 행사입니다.</li>
-        </ul>
-      </section>
-      <section id="nature">
-        <h2>자연·휴식</h2>
-        <ul>
-          <li><strong>용두산공원</strong> — 도심 한복판 용두산 정상에 조성된 녹지 공원으로, 계단과 에스컬레이터로 오르며 부산타워와 팔각정, 꽃시계가 어우러진 대표 산책·전망 명소입니다.</li>
-          <li><strong>수미르공원</strong> — 부산항 연안여객터미널 인근 바닷가에 조성된 친수공원으로, 물과 용을 뜻하는 이름처럼 항만과 영도를 바라보며 산책하기 좋은 해안 휴식 공간입니다.</li>
-          <li><strong>보수산 산복도로 일대</strong> — 중구를 감싸는 보수산 자락의 산복도로는 가파른 계단길과 마을을 잇는 골목 산책로로, 원도심의 지붕과 항구를 조망하며 걷는 코스로 사랑받습니다.</li>
-          <li><strong>민주공원</strong> — 중구와 인접한 대청공원 언덕에 자리해 도보로 이어지는 추모·휴식 공간으로, 4·19와 부마항쟁 등 민주화 역사를 기리며 도심 전망과 숲길을 함께 제공합니다.</li>
-          <li><strong>광복로 문화패션거리</strong> — 남포동과 광복동을 잇는 보행 친화형 거리로, 가로수와 벤치가 놓인 산책 겸 쇼핑 공간으로 조성되어 겨울 트리축제의 무대가 되기도 합니다.</li>
-        </ul>
-      </section>
-      <section id="transport">
-        <h2>교통</h2>
-        <p>중구는 부산 도시철도 1호선이 남북으로 관통해 중앙역, 남포역, 자갈치역이 원도심 곳곳을 촘촘히 연결합니다. 남포역과 자갈치역은 각각 광복로·BIFF광장과 자갈치시장으로 바로 이어져 관광객 접근성이 매우 좋습니다. 도로는 중앙대로가 아시안하이웨이 6호선으로 도심을 세로로 관통하고, 충장대로가 항만을 따라 이어지며 구덕로(국도 제2호선)가 서쪽으로 뻗습니다. 바닷길로는 부산항국제여객터미널에서 일본 노선이, 연안여객터미널에서 국내 도서 노선이 운항됩니다. 다만 좁은 골목과 가파른 지형 탓에 원도심 안쪽은 도보와 대중교통 이용이 편리하며, 주요 명소가 서로 걸어서 오갈 수 있는 거리에 모여 있습니다.</p>
-      </section>
-      <section id="symbols">
-        <h2>지역 상징</h2>
-        <ul class="symbols">
-          <li>구화(꽃): 동백</li>
-          <li>구목(나무): 소나무</li>
-          <li>구조(새): 비둘기</li>
-        </ul>
-      </section>
-      <section id="faq">
-        <h2>자주 묻는 질문</h2>
-        <div class="faq">
-          <details>
-            <summary>부산 중구청은 어디에 있나요?</summary>
-            <p>부산광역시 중구 중구로 120(대청동)에 위치하며, 도시철도 1호선 중앙역과 가깝습니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구의 대표 관광지는 어디인가요?</summary>
-            <p>자갈치시장, 국제시장, 용두산공원과 부산타워, BIFF광장, 보수동 책방골목이 대표적이며 대부분 걸어서 이동할 수 있습니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구는 왜 관광특구로 유명한가요?</summary>
-            <p>용두산공원 일대의 근대역사관, 헌책방 골목, 자갈치·국제시장, BIFF광장, 40계단 등이 밀집해 2008년 관광특구로 지정되었기 때문입니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구를 지하철로 가려면 어느 역에서 내리나요?</summary>
-            <p>도시철도 1호선 남포역과 자갈치역, 중앙역이 원도심 명소와 바로 연결되어 편리합니다.</p>
-          </details>
-          <details>
-            <summary>보수동 책방골목은 어떻게 생겨났나요?</summary>
-            <p>광복 직후 일본인이 남기고 간 책을 노점에 펼쳐 팔던 데서 시작되어, 지금은 국내 대표 헌책방 거리로 자리 잡았습니다.</p>
-          </details>
-          <details>
-            <summary>부산 중구의 인구는 얼마나 되나요?</summary>
-            <p>2024년 기준 약 3만 7천여 명으로 부산에서 인구가 적은 편이지만, 낮에는 상인과 관광객으로 크게 붐빕니다.</p>
-          </details>
-        </div>
-      </section>
-      <section id="links">
-        <h2>공식 링크</h2>
-        <ul>
-          <li><a href="https://www.bsjunggu.go.kr/index.junggu" rel="noopener">부산광역시 중구청</a></li>
-          <li><a href="https://www.bsjunggu.go.kr/tour/index.junggu" rel="noopener">부산광역시 중구 문화관광</a></li>
-        </ul>
-      </section>
-      <section id="github">
-        <h2>GitHub</h2>
-        <ul>
-          <li><a href="https://github.com/kr-busan-jung" rel="noopener">GitHub 조직: kr-busan-jung</a></li>
-          <li><a href="https://github.com/kr-busan-jung/kr-busan-jung.github.io" rel="noopener">이 사이트 저장소</a></li>
-        </ul>
-      </section>
-      <section id="sources">
-        <h2>출처</h2>
-        <ul class="sources">
-          <li><a href="https://ko.wikipedia.org/wiki/%EC%A4%91%EA%B5%AC_(%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C)" rel="noopener">중구 (부산광역시) - 위키백과</a> (조회 2026-07-08)</li>
-          <li><a href="https://www.bsjunggu.go.kr/index.junggu" rel="noopener">부산광역시 중구청 공식 홈페이지</a> (조회 2026-07-08)</li>
-          <li><a href="https://www.bsjunggu.go.kr/tour/index.junggu" rel="noopener">부산광역시 중구 문화관광 - 40계단·보수동 책방골목·BIFF광장 소개</a> (조회 2026-07-08)</li>
-          <li><a href="https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaCpno=4412105730000" rel="noopener">국가유산포털 - 대한성공회 부산주교좌성당(국가등록문화재 제573호)</a> (조회 2026-07-08)</li>
-        </ul>
-      </section> sections out and turn each into a maze cell ----
+  // ---- 1. Lift the injected 콘텐츠 sections out and turn each into a maze cell ----
   var sections=Array.prototype.slice.call(rawWrap.querySelectorAll('section'));
 
   // Market-alley labels + span sizes that weave an interlocking silhouette.
@@ -1055,6 +858,133 @@ body { padding-top: var(--cg-strip-h); }
   }
 })();
 </script>
+  </div>
+  <main class="cg-read" id="cg-read" role="main" lang="ko" style="--cg-ra:#ab5a2b;--cg-ra2:#d0c639;--cg-rd:#573019">
+    <header class="cg-read-head">
+      <p class="cg-read-eyebrow">부산광역시</p>
+      <h1>중구</h1>
+    </header>
+    <div class="cg-read-body">
+      <section id="r-intro">
+        <h2>지역 소개</h2>
+        <p>부산광역시 중구는 부산항을 마주 보는 원도심으로, 개항 이래 부산의 상업과 관광이 응집된 심장부 역할을 이어 온 곳입니다. 자갈치시장과 국제시장, BIFF광장, 광복로가 좁은 골목 안에 밀집해 관광객과 상인의 발길이 하루 종일 이어집니다. 면적은 약 2.82㎢로 부산의 기초자치단체 가운데 가장 작지만, 그 안에 담긴 근현대사와 시장 문화의 밀도는 어느 지역보다 짙습니다. 용두산공원 정상의 부산타워에서 내려다보면 남포동 극장가와 항만, 영도대교가 한눈에 펼쳐집니다. 6·25 전쟁기 피난 수도의 애환이 40계단과 보수동 책방골목에 고스란히 남아, 옛것과 오늘이 공존하는 독특한 정취를 만들어 냅니다.</p>
+      </section>
+      <section id="r-facts">
+        <h2>주요 통계</h2>
+        <ul class="facts">
+          <li>인구: 약 37,736명 (2024)</li>
+          <li>면적: 2.82 km²</li>
+          <li>신설: 1957-01-01</li>
+        </ul>
+      </section>
+      <section id="r-history">
+        <h2>역사</h2>
+        <p>중구 일대는 조선 후기 초량왜관이 자리했던 곳으로, 1675년 착공해 1678년 완공된 약 10만 평 규모의 왜관에서 조선과 일본의 교역이 이루어졌습니다. 일본 사신을 맞아 연회를 베풀던 연향대청이 있던 자리에서 대청동과 대청로라는 지명이 유래했습니다. 1876년 부산 개항 이후 이 일대는 근대 문물이 밀려드는 관문이 되었고, 1914년 부산부 설치로 행정 중심에 편입되었습니다. 광복 직후에는 일본인이 두고 간 책을 노점에 펼쳐 팔던 것이 보수동 책방골목의 시작이 되었고, 6·25 전쟁기에는 임시수도 부산의 피난민이 40계단 주변에 판잣집을 짓고 구호물자를 사고팔았습니다. 1957년 경상남도 부산시 중구로 정식 출범했고, 1995년 부산광역시 중구로 개칭되었으며 1999년 보수1·2동 통합으로 현재의 9개 행정동 체제가 갖춰졌습니다.</p>
+      </section>
+      <section id="r-geography">
+        <h2>지리·자연환경</h2>
+        <p>중구는 부산항 북항에 접한 좁은 해안 저지대와 그 배후의 가파른 산자락으로 이루어져 있습니다. 동쪽은 영주천, 서쪽은 보수천을 자연 경계로 삼고 남쪽은 바다에 면하며, 뒤로는 구봉산 줄기를 이어받은 보수산과 용두산이 시가지를 감싸 안습니다. 용두산은 그 모양이 바다를 향해 머리를 든 용을 닮았다 하여 붙은 이름으로, 오늘날 도심 속 녹지 전망대 역할을 합니다. 평지가 거의 없어 산비탈을 따라 계단식으로 집과 골목이 빼곡히 들어찬 산복도로 경관이 특징적입니다. 온대성 기후로 연평균 기온은 약 14.4도, 연간 강수량은 약 1,491㎜이며 바다에 면해 겨울에도 비교적 온화합니다. 이렇듯 산과 바다가 맞닿은 좁은 지형이 중구 특유의 조밀한 도시 풍경을 만들어 냈습니다.</p>
+      </section>
+      <section id="r-characteristics">
+        <h2>지역 특징</h2>
+        <p>중구는 2024년 기준 인구가 약 3만 7천여 명으로 부산에서 손꼽히게 인구가 적지만, 낮 시간에는 상인과 방문객으로 인구가 크게 불어나는 전형적인 상업·관광 도심입니다. 자갈치시장을 중심으로 한 수산물 유통, 국제시장과 부평깡통시장의 전통 도소매, 남포동·광복동의 패션과 요식업이 지역 경제를 떠받칩니다. 한국은행 부산본부와 금융결제원 부산본부 등 금융기관과 여객터미널이 자리해 항만·물류·금융 기능이 결합된 원도심 성격을 지닙니다. 정주 인구는 고령화와 도심 공동화로 줄었으나, 관광특구 지정과 원도심 재생 사업으로 유동 인구는 활발합니다. 좁은 면적에 41개 법정동을 9개 행정동으로 묶어 운영하며 통·반 밀도가 높습니다. 이처럼 상주 인구는 적어도 부산 관광과 상업의 상징성을 강하게 지닌 것이 중구의 가장 큰 특징입니다.</p>
+      </section>
+      <section id="r-landmarks">
+        <h2>대표 명소</h2>
+        <ul>
+          <li><strong>자갈치시장</strong> — 부산을 대표하는 국내 최대 수산물 시장으로, 자갈이 깔린 바닷가에서 유래한 이름처럼 항구를 끼고 활어와 건어물이 거래되며 부산 여행의 필수 코스로 꼽힙니다.</li>
+          <li><strong>국제시장</strong> — 광복과 6·25 전쟁을 거치며 형성된 부산의 대표 전통시장으로, 먹자골목과 만물상이 미로처럼 이어져 서민 상업 문화의 원형을 간직하고 있습니다.</li>
+          <li><strong>용두산공원과 부산타워</strong> — 용을 닮은 산에 조성된 도심 공원으로 정상에 높이 120m급 부산타워와 이순신 장군 동상이 있어, 남포동 극장가와 부산항 야경을 한눈에 조망할 수 있습니다.</li>
+          <li><strong>BIFF광장</strong> — 1996년 부산국제영화제 개최를 계기로 옛 극장가 일대를 새롭게 단장해 명명한 거리로, 바닥에 새겨진 영화인 핸드프린팅과 씨앗호떡 노점이 명물입니다.</li>
+          <li><strong>보수동 책방골목</strong> — 광복 직후 헌책을 노점에 펼쳐 팔던 데서 시작된 국내 대표 헌책방 거리로, 오래된 서점들이 좁은 골목에 줄지어 고서와 헌책 문화를 이어 가고 있습니다.</li>
+        </ul>
+      </section>
+      <section id="r-heritage">
+        <h2>문화유산·문화시설</h2>
+        <ul>
+          <li><strong>부산근현대역사관</strong> — 옛 한국은행 부산본부 등 근대 건축물을 활용해 개항부터 현재까지 부산의 근현대사를 전시하는 시립 역사관으로, 원도심 답사의 출발점 역할을 합니다.</li>
+          <li><strong>대한성공회 부산주교좌성당</strong> — 대청동에 1924년 지어진 일제강점기 성공회 성당으로, 2013년 국가등록문화재 제573호로 지정된 근대 종교 건축의 대표 사례입니다.</li>
+          <li><strong>40계단 문화관광테마거리</strong> — 6·25 전쟁기 피난민의 애환이 서린 40계단 일대를 1950~60년대 분위기로 재현한 테마거리로, 피난 생활상을 담은 조형물과 문화관이 조성되어 있습니다.</li>
+          <li><strong>광복로 겨울빛 트리축제</strong> — 매년 12월부터 이듬해까지 광복로 일대를 거대한 트리와 조명으로 밝히는 부산 대표 겨울 빛축제로, 원도심 상권 활성화와 함께 연말 명소로 자리 잡았습니다.</li>
+          <li><strong>부산자갈치축제</strong> — 자갈치시장을 무대로 열리는 수산물 축제로, 활어 경매와 먹거리 장터, 공연이 어우러져 부산 어시장의 활기와 정을 알리는 지역 대표 행사입니다.</li>
+        </ul>
+      </section>
+      <section id="r-nature">
+        <h2>자연·휴식</h2>
+        <ul>
+          <li><strong>용두산공원</strong> — 도심 한복판 용두산 정상에 조성된 녹지 공원으로, 계단과 에스컬레이터로 오르며 부산타워와 팔각정, 꽃시계가 어우러진 대표 산책·전망 명소입니다.</li>
+          <li><strong>수미르공원</strong> — 부산항 연안여객터미널 인근 바닷가에 조성된 친수공원으로, 물과 용을 뜻하는 이름처럼 항만과 영도를 바라보며 산책하기 좋은 해안 휴식 공간입니다.</li>
+          <li><strong>보수산 산복도로 일대</strong> — 중구를 감싸는 보수산 자락의 산복도로는 가파른 계단길과 마을을 잇는 골목 산책로로, 원도심의 지붕과 항구를 조망하며 걷는 코스로 사랑받습니다.</li>
+          <li><strong>민주공원</strong> — 중구와 인접한 대청공원 언덕에 자리해 도보로 이어지는 추모·휴식 공간으로, 4·19와 부마항쟁 등 민주화 역사를 기리며 도심 전망과 숲길을 함께 제공합니다.</li>
+          <li><strong>광복로 문화패션거리</strong> — 남포동과 광복동을 잇는 보행 친화형 거리로, 가로수와 벤치가 놓인 산책 겸 쇼핑 공간으로 조성되어 겨울 트리축제의 무대가 되기도 합니다.</li>
+        </ul>
+      </section>
+      <section id="r-transport">
+        <h2>교통</h2>
+        <p>중구는 부산 도시철도 1호선이 남북으로 관통해 중앙역, 남포역, 자갈치역이 원도심 곳곳을 촘촘히 연결합니다. 남포역과 자갈치역은 각각 광복로·BIFF광장과 자갈치시장으로 바로 이어져 관광객 접근성이 매우 좋습니다. 도로는 중앙대로가 아시안하이웨이 6호선으로 도심을 세로로 관통하고, 충장대로가 항만을 따라 이어지며 구덕로(국도 제2호선)가 서쪽으로 뻗습니다. 바닷길로는 부산항국제여객터미널에서 일본 노선이, 연안여객터미널에서 국내 도서 노선이 운항됩니다. 다만 좁은 골목과 가파른 지형 탓에 원도심 안쪽은 도보와 대중교통 이용이 편리하며, 주요 명소가 서로 걸어서 오갈 수 있는 거리에 모여 있습니다.</p>
+      </section>
+      <section id="r-symbols">
+        <h2>지역 상징</h2>
+        <ul class="symbols">
+          <li>구화(꽃): 동백</li>
+          <li>구목(나무): 소나무</li>
+          <li>구조(새): 비둘기</li>
+        </ul>
+      </section>
+      <section id="r-faq">
+        <h2>자주 묻는 질문</h2>
+        <div class="faq">
+          <details>
+            <summary>부산 중구청은 어디에 있나요?</summary>
+            <p>부산광역시 중구 중구로 120(대청동)에 위치하며, 도시철도 1호선 중앙역과 가깝습니다.</p>
+          </details>
+          <details>
+            <summary>부산 중구의 대표 관광지는 어디인가요?</summary>
+            <p>자갈치시장, 국제시장, 용두산공원과 부산타워, BIFF광장, 보수동 책방골목이 대표적이며 대부분 걸어서 이동할 수 있습니다.</p>
+          </details>
+          <details>
+            <summary>부산 중구는 왜 관광특구로 유명한가요?</summary>
+            <p>용두산공원 일대의 근대역사관, 헌책방 골목, 자갈치·국제시장, BIFF광장, 40계단 등이 밀집해 2008년 관광특구로 지정되었기 때문입니다.</p>
+          </details>
+          <details>
+            <summary>부산 중구를 지하철로 가려면 어느 역에서 내리나요?</summary>
+            <p>도시철도 1호선 남포역과 자갈치역, 중앙역이 원도심 명소와 바로 연결되어 편리합니다.</p>
+          </details>
+          <details>
+            <summary>보수동 책방골목은 어떻게 생겨났나요?</summary>
+            <p>광복 직후 일본인이 남기고 간 책을 노점에 펼쳐 팔던 데서 시작되어, 지금은 국내 대표 헌책방 거리로 자리 잡았습니다.</p>
+          </details>
+          <details>
+            <summary>부산 중구의 인구는 얼마나 되나요?</summary>
+            <p>2024년 기준 약 3만 7천여 명으로 부산에서 인구가 적은 편이지만, 낮에는 상인과 관광객으로 크게 붐빕니다.</p>
+          </details>
+        </div>
+      </section>
+      <section id="r-links">
+        <h2>공식 링크</h2>
+        <ul>
+          <li><a href="https://www.bsjunggu.go.kr/index.junggu" rel="noopener">부산광역시 중구청</a></li>
+          <li><a href="https://www.bsjunggu.go.kr/tour/index.junggu" rel="noopener">부산광역시 중구 문화관광</a></li>
+        </ul>
+      </section>
+      <section id="r-github">
+        <h2>GitHub</h2>
+        <ul>
+          <li><a href="https://github.com/kr-busan-jung" rel="noopener">GitHub 조직: kr-busan-jung</a></li>
+          <li><a href="https://github.com/kr-busan-jung/kr-busan-jung.github.io" rel="noopener">이 사이트 저장소</a></li>
+        </ul>
+      </section>
+      <section id="r-sources">
+        <h2>출처</h2>
+        <ul class="sources">
+          <li><a href="https://ko.wikipedia.org/wiki/%EC%A4%91%EA%B5%AC_(%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C)" rel="noopener">중구 (부산광역시) - 위키백과</a> (조회 2026-07-08)</li>
+          <li><a href="https://www.bsjunggu.go.kr/index.junggu" rel="noopener">부산광역시 중구청 공식 홈페이지</a> (조회 2026-07-08)</li>
+          <li><a href="https://www.bsjunggu.go.kr/tour/index.junggu" rel="noopener">부산광역시 중구 문화관광 - 40계단·보수동 책방골목·BIFF광장 소개</a> (조회 2026-07-08)</li>
+          <li><a href="https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaCpno=4412105730000" rel="noopener">국가유산포털 - 대한성공회 부산주교좌성당(국가등록문화재 제573호)</a> (조회 2026-07-08)</li>
+        </ul>
+      </section>
+    </div>
+  </main>
   <aside class="cg-sponsors" aria-label="후원 파트너 상세">
     <p class="cg-spon-head"><span class="cg-ad">AD</span> 후원 파트너 <small>이 링크는 광고이며 편집상의 추천이 아닙니다 (rel=&quot;sponsored&quot;).</small></p>
     <ul class="cg-spon-grid">
